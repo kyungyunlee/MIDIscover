@@ -1,7 +1,7 @@
 import os
 import pretty_midi
 import numpy as np
-from utils import make_id 
+from .utils import make_id 
 
 def autocorrelate(sequence):
     pass

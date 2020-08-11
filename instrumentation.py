@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import pretty_midi  
-from utils import make_id 
+from .utils import make_id 
 
 
 def note_prevalence(midi_data, pitched_inst_only=False, drum_only=False) :  
@@ -30,7 +30,7 @@ def note_prevalence(midi_data, pitched_inst_only=False, drum_only=False) :
             id_ = make_id(instrument)
             out[id_] = len(instrument.notes)
     
-    for k,v in all_note_on.items():
+    for k,v in out.items():
         out[k] = v/total_note_on_count 
 
     return out 

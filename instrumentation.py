@@ -1,11 +1,22 @@
 import os
 import numpy as np
 import pretty_midi  
+from utils import make_id 
 
 
 def note_prevalence(midi_data, pitched_inst_only=False, drum_only=False) :  
+    '''
+    Computes the fraction of note on events of each instrument over the entire note on events.
+    (# of note on events of instrument X) / (# of note on events for all instruments)
+    Args : 
+        midi_data : pretty_midi midi object
+        pitched_inst_only : whether to compute for only non-drum instruments (for computing note prevalence for pitched instruments) 
+        drum_only : whether to compute for only drum instruments (for non-pitched instruments) 
+    Return : 
+        out : dictionary with ('program_X_inst_Y' as key) and fraction as value (float) 
+    '''
     
-    all_note_on = {}
+    out = {}
     total_note_on_count = 0 
     for instrument in midi_data.instruments : 
         if pitched_inst_only and instrument.is_drum : 
@@ -16,14 +27,13 @@ def note_prevalence(midi_data, pitched_inst_only=False, drum_only=False) :
             continue
         else :
             total_note_on_count += len(instrument.notes)
-            inst_name = instrument.name if instrument.name != "" else "unknown"             
-            id_ = "program_{}_name_{}".format(instrument.program, instrument.name)
-            all_note_on[id_] = len(instrument.notes)
+            id_ = make_id(instrument)
+            out[id_] = len(instrument.notes)
     
     for k,v in all_note_on.items():
-        all_note_on[k] = v/total_note_on_count 
+        out[k] = v/total_note_on_count 
 
-    return all_note_on 
+    return out 
 
 def note_prevalence_variance(midi_data, pitched_inst_only=False, drum_only=False) : 
     all_note_on = note_prevalence(midi_data, pitched_inst_only, drum_only)

@@ -1,4 +1,4 @@
-# Midiscover 
+# MIDIscover 
 
 Midi feature extraction 
 
@@ -15,3 +15,4 @@ Listed in requirements.txt
 
 ### Reference
 * [http://jmir.sourceforge.net/publications/MA_Thesis_2004_Bodhidharma.pdf](http://jmir.sourceforge.net/publications/MA_Thesis_2004_Bodhidharma.pdf) 
+* [Musical Genre Classification of Audio Signals](http://dspace.library.uvic.ca:8080/bitstream/handle/1828/1344/tsap02gtzan.pdf?sequence=1) 

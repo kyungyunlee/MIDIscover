@@ -46,7 +46,13 @@ def most_common_pitch(midi_inst, top_n=1):
     sorted_value = pitch_hist[sorted_idx]
     top_list = list(sorted_idx[:top_n])
     last_val = sorted_value[top_n-1] 
-    for idx, val in zip(sorted_idx, sorted_value):
+    # print (sorted_idx)
+    # print (sorted_value)
+    # print (top_list)
+    # print (last_val)
+    for i, (idx, val) in enumerate(zip(sorted_idx, sorted_value)):
+        if i < top_n : 
+            continue 
         if idx != top_list[-1] and val == last_val :
             top_list.append(idx) 
     top_list = np.array(top_list)
@@ -70,7 +76,9 @@ def most_common_pitch_class(midi_inst, top_n=1):
     sorted_value = pitch_hist[sorted_idx]
     top_list = list(sorted_idx[:top_n])
     last_val = sorted_value[top_n-1] 
-    for idx, val in zip(sorted_idx, sorted_value):
+    for i, (idx, val) in enumerate(zip(sorted_idx, sorted_value)):
+        if i < top_n : 
+            continue
         if idx != top_list[-1] and val == last_val :
             top_list.append(idx) 
     top_list = np.array(top_list)

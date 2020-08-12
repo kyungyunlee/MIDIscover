@@ -2,6 +2,7 @@ import os
 import pretty_midi
 import numpy as np
 
+eps = 1e-6
 
 def melodic_interval_histogram(midi_inst, normalized=True):
     '''
@@ -27,11 +28,13 @@ def melodic_interval_histogram(midi_inst, normalized=True):
                 intervals[36] += 1 
             else : 
                 interval_idx = pitch_diff + 36
+                if interval_idx > 72 : 
+                    continue
                 intervals[interval_idx] +=1 
 
     
     if normalized : 
-        intervals /= np.sum(intervals)
+        intervals /= (np.sum(intervals) + eps)
 
     return intervals
 
@@ -43,7 +46,7 @@ def average_melodic_interval(midi_inst):
         itv = i - 36 
         sum_intervals += abs(itv) * n_itv
 
-    return sum_intervals / np.sum(intervals)
+    return sum_intervals / (np.sum(intervals) + eps)
 
         
 def most_common_melodic_interval(midi_inst):
@@ -51,6 +54,8 @@ def most_common_melodic_interval(midi_inst):
     top_itv = np.argwhere(intervals == np.amax(intervals))
     top_itv = np.array([x[0] for x in top_itv]) 
     top_itv -= 36
+    top_itv = list(top_itv)
+   
     return top_itv
 
 def melodic_interval_fractions(midi_inst, interval_amt):
@@ -77,7 +82,7 @@ def melodic_interval_fractions(midi_inst, interval_amt):
         n = intervals[30] + intervals[41]
     else:
         n = intervals[36 - 12] + intervals[36 + 12] + intervals[36 - 24] + intervals [36 + 24] + intervals[0] + intervals[-1] 
-    return n / np.sum(intervals)
+    return n / (np.sum(intervals) + eps)
 
 
 def direction_of_melody(midi_inst):
@@ -94,7 +99,7 @@ def direction_of_melody(midi_inst):
     intervals = melodic_interval_histogram(midi_inst, normalized=False)
     down = np.sum(intervals[:36])
     up = np.sum(intervals[37:]) 
-    return down / np.sum(intervals), up / np.sum(intervals)
+    return down / (np.sum(intervals) + eps) , up / (np.sum(intervals) + eps)
 
 
 

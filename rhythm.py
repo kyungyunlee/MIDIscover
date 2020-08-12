@@ -3,6 +3,8 @@ import pretty_midi
 import numpy as np
 from .utils import make_id 
 
+eps = 1e-6 
+
 def autocorrelate(sequence):
     pass
 
@@ -15,7 +17,7 @@ def instrument_note_density_per_second(midi_inst):
     piano_roll = midi_inst.get_piano_roll()
     piano_roll[piano_roll > 0] = 1 
     
-    density = np.sum(piano_roll) / piano_roll.shape[1] * 100 
+    density = np.sum(piano_roll) / ( piano_roll.shape[1] * 100 + eps)
     return density 
 
 
@@ -36,15 +38,20 @@ def note_density_per_second(midi_data):
             midi_inst.is_drum = False
         piano_roll = midi_inst.get_piano_roll()
         piano_roll[piano_roll > 0] = 1 
+
         
-        density = np.sum(piano_roll) / piano_roll.shape[1] * 100 
+        density = np.sum(piano_roll) / (piano_roll.shape[1] * 100 + eps)
         
+        if piano_roll.shape[1] < total_piano_roll.shape[1] : 
+            tmp = np.zeros((128, total_piano_roll.shape[1]))
+            tmp[:, : piano_roll.shape[1]] = piano_roll
+            piano_roll = tmp 
         total_piano_roll[128 * i : (i+1) * 128,:]=piano_roll 
         id_ = make_id(midi_inst)
         output[id_] = density
 
     
-    total_density = np.sum(total_piano_roll) / total_piano_roll.shape[1] *100
+    total_density = np.sum(total_piano_roll) / (total_piano_roll.shape[1] *100 + eps)
     output['total'] = total_density 
     return output 
 

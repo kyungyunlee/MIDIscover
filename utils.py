@@ -9,7 +9,8 @@ def make_id(midi_instrument):
         id_ : 'program_X_name_Y' where X = instrument's program number, Y = instrument name 
     ''' 
     name = midi_instrument.name if midi_instrument.name != "" else "unknown"
-    id_ = "program_{}_name_{}".format(midi_instrument.program, name)
+    # id_ = "program_{}_name_{}".format(midi_instrument.program, name)
+    id_ = name 
     return id_ 
 
 

@@ -156,7 +156,20 @@ def pitch_range(midi_inst):
     return valid_pitches[-1] - valid_pitches[0]
 
 
+def major_or_minor(midi_data): 
+    midi_insts = mmidi_data.instruments
 
+    total_hist = None 
+    for inst in midi_insts:
+        if total_hist == None : 
+            total_hist = pitch_class_histogram(inst, normalized=False)
+        else : 
+            total_hist += pitch_class_histogram(inst, normalized=False)
+
+
+    print (total_hist)
+
+    return False 
 
 
 if __name__ =='__main__' :
@@ -164,5 +177,6 @@ if __name__ =='__main__' :
     #  a = most_common_pitch(midi_data.instruments[1])
     # a = pitch_class_variety(midi_data.instruments[1])
     # a = number_of_common_pitches(midi_data.instruments[1])
-    a = pitch_range(midi_data.instruments[1])
-    print (a) 
+    # a = pitch_range(midi_data.instruments[1])
+    # print (a) 
+    a = major_or_minor(midi_data)
